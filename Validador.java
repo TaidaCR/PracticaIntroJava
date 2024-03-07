@@ -1,16 +1,4 @@
- System.out.print("Quieres modificar alguna nota? Y/N");
-    String salida3 = scanner.nextLine();
-    if (salida3.equals("Y")){
-        for (Alumno alumno : listaAlumnos){
-            System.out.print("Alumno: " + alumno.getInfo());
-            
-
-        }
-    }
-
-
-
-    import java.util.InputMismatchException;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 public class Validador {
     static Scanner input = new Scanner(System.in);
@@ -20,17 +8,14 @@ public class Validador {
     
     //IMPLEMENTADO EN NOM, APP Y ASIGN
     public String validadorString(String mensaje){
-        String nombre = "";
+        System.out.print(mensaje);
+        String nombre = input.nextLine();
         boolean pideMas = true;
         while (pideMas){
-            try {
-                //input.nextLine();
-                System.out.print(mensaje);
-
-                nombre = input.nextLine();
+            if (nombre.matches("[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ -]+")){
                 pideMas = false;
-            }catch (InputMismatchException e){
-                System.out.print("Valor erróneo.  ");
+            }else{
+                System.out.print("Valor erróneo, por favor, introduce letras:  ");
                 nombre = input.nextLine();
             }
         }
@@ -71,7 +56,5 @@ public class Validador {
         return numAlumn;
     }
 }
-
-
 
 //SEGUIR CON ESTO

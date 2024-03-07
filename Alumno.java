@@ -1,6 +1,7 @@
 import java.util.Map;
 import java.util.HashMap;
 import java.text.DecimalFormat;
+import java.util.Scanner;
 
 public class Alumno {
     private String nombre;
@@ -41,22 +42,50 @@ public class Alumno {
 
         StringBuilder sb = new StringBuilder();
         
-        sb.append("\n");
-        sb.append("Asignatura             Nota\n");
+        sb.append("           \n");
+        sb.append("ASIGNATURA               NOTA\n");
         sb.append("----------------------------\n");
         
         for (Map.Entry<String, Double> entry : asignaturaYNota.entrySet()){
             String asignatura = entry.getKey();
-            String nota = Double.toString(entry.getValue());
-            sb.append(String.format(asignatura+"          "+nota+"\n"));
+            String nota = String.format("%.2f",entry.getValue());
+            sb.append(String.format("%-25s%s\n", asignatura, nota));
         }
 
         sb.append("----------------------------\n");
-        sb.append("Nota media:         " + promedio);
-        sb.append("    \n");
+        sb.append("Nota media:              " + promedio);
         sb.append("    \n");
 
         return sb.toString();
     }
+
+    public void modificarAsignaturas(){
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Asignatura a modificar: ");
+        String asignModificar = scanner.nextLine();
+        Double nuevaNota = 0.0;
+        boolean siguePidiendo=true;
+        while (siguePidiendo){
+            for (Map.Entry<String, Double> entry : asignaturaYNota.entrySet()){
+                String asignatura = entry.getKey();
+                Double nota = entry.getValue();
+                if (asignatura.equalsIgnoreCase(asignModificar)){
+                    
+                    System.out.print(entry.getValue());
+                    scanner.nextLine();
+                    System.out.print("Introduce la nueva nota: ");
+                    nuevaNota = scanner.nextDouble();
+                    asignaturaYNota.put(asignatura,nuevaNota);
+                    siguePidiendo=false;
+                    break;
+                }else{
+                    siguePidiendo=true;
+                }
+                    
+                    
+            }
+        }
+    }
+   
 }
     
