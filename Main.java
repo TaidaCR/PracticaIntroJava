@@ -6,69 +6,69 @@ public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         List<Alumno> listaAlumnos = new ArrayList<>();
-        Double nota;
+        Double nota=0.0;
+        String materia=" ";
         String nombre = "";
         String apellidos = "";
+        Asignaturas asignatura = new Asignaturas(materia,nota);
         Validador validador = new Validador();
-
-        //System.out.print("Introduce el numero de alumnos: ");
         int numAlumn=validador.validadorNumAlumn();
-        //scanner.nextLine();
 
-        
-
+        //AÑADIR NOMBRE, APELLIDO, MATERIA Y NOTA
         for (int i = 1; i <= numAlumn ; i++){
-        
             nombre = validador.validadorString("Introduce el nombre: ");
             apellidos = validador.validadorString("Introduce los apellidos: ");
             Alumno alumno = new Alumno(nombre, apellidos); 
             listaAlumnos.add(alumno);
-            
-            String materia=" ";
+            materia="";
             while (!materia.equals("e")){
-                materia = validador.validadorString("Introduce la asignatura o pulsa -e- para terminar: ");
+                materia = validador.validadorMateria("Introduce la asignatura o pulsa -e- para terminar: ");
                 if (materia.equals("e")){
                     break;
+                } else {
+                    nota = validador.validadorNota();
+                    alumno.añadirAsignaturaYNota(materia, nota);
+                    System.out.print("Siguiente--> \n");
                 }
-                System.out.print("Añade una nota: ");
-                nota = scanner.nextDouble();
-                //scanner.nextLine();
-
-                alumno.añadirAsignaturaYNota(materia, nota);
-                scanner.nextLine();
-                
             }
+            System.out.print("Siguiente alumno. \n");
         }
-        //AÑADIR ASIGN Y NOTA A ALUMNO
+        //MOSTRAR BOLETIN
         for (Alumno alumno : listaAlumnos) {
-            System.out.print("ALUMNA/O: " + alumno.getInfo());
+            System.out.print("-                          -\n");
+            System.out.print("ALUMNA/O: " + alumno.getInfo() + "\n");
             System.out.print(alumno.mostrarBoletin(alumno.notaMedia()));
         }
 
         //MODIFICAR NOTA
-        
         boolean siguePidiendo = true;
-        while (siguePidiendo){
-            System.out.print("Desea modificar alguna asingatura?: --Y/N--");
-            String respuesta = scanner.nextLine();
-            if (respuesta.equalsIgnoreCase("y")){
-                for (Alumno alumno: listaAlumnos){
-                    alumno.modificarAsignaturas();
+        System.out.print("Desea modificar el boletín?: --Y/N--");
+        String respuesta = scanner.nextLine();
+        for (Alumno alumno : listaAlumnos){
+            System.out.printf("Alumno:  " + alumno.getInfo() + "\n");
+            while (siguePidiendo){
+                if (respuesta.equalsIgnoreCase("y")){
+                    String respuesta1 = alumno.modificarNotaAsignaturas();
+                    if (respuesta1.equalsIgnoreCase("e") || respuesta1.equalsIgnoreCase("n")){
+                        break;
+                    }
+                }else if (respuesta.equalsIgnoreCase("n")){
+                    siguePidiendo = false;
+                    break;
+                }else{
+                    System.out.print("Valor erróneo. Por favor, introduzca Y/N.");
+                    respuesta = scanner.nextLine();
+                    siguePidiendo = true;
                 }
-            }else if (respuesta.equalsIgnoreCase("n")){
-                System.out.print("Evaluación terminada.");
-                siguePidiendo = false;
-                break;
-            }else{
-                System.out.print("Valor erróneo. Por favor, introduzca Y/N.");
-                respuesta = scanner.nextLine();
-                siguePidiendo = true;
             }
         }
+        System.out.print("Evaluación terminada.\n");
 
+        //IMPRIMIR BOLETIN MODIFICADO
+        System.out.print("      BOLETIN MODIFICADO \n");
         for (Alumno alumno : listaAlumnos) {
-            System.out.print("     BOLETIN MODIFICADO");
-            System.out.print("ALUMNA/O: " + alumno.getInfo());
+            System.out.print("    \n");
+            System.out.printf("ALUMNA/O: " + alumno.getInfo() + "\n");
             System.out.print(alumno.mostrarBoletin(alumno.notaMedia()));
         }
     }

@@ -73,5 +73,10 @@ public class Validador {
 }
 
 
+//AÑADE EN UNA LISTA TODAS LAS ASIGNATURAS Y SUS NOTAS
+    public void addAsignaturaYNotaAArray(String materia, Double nota){
+        listadoAsignaturasYNota.add(new Asignaturas(materia, nota));
+    }
+
 
 //SEGUIR CON ESTO

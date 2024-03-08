@@ -12,9 +12,10 @@ public class Asignaturas {
         this.materia = materia;
         this.nota = nota;
     }
-    //AÑADE EN UNA LISTA TODAS LAS ASIGNATURAS Y SUS NOTAS
-    public void addAsignaturaYNotaAArray(String materia, Double nota){
-        listadoAsignaturasYNota.add(new Asignaturas(materia, nota));
+
+    public String setMateria(String valor){
+        materia=valor;
+        return materia;
     }
 
     public String getMateria() {
@@ -25,11 +26,9 @@ public class Asignaturas {
         return nota;
     }
     
-    public String setNota(Double nota) {
-        String nota1;
-        this.nota = nota;
-        nota1= Double.toString(nota);
-        return nota1;
+    public Double setNota(Double valor) {
+        nota=valor;
+        return nota;
     }
 }
 

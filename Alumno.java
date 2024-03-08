@@ -4,24 +4,26 @@ import java.text.DecimalFormat;
 import java.util.Scanner;
 
 public class Alumno {
+    static Scanner scanner = new Scanner(System.in);
     private String nombre;
     private String apellidos;
-    String asignatura;
+    String asignatura; //?? ELIMINAR?
     HashMap<String, Double> asignaturaYNota = new HashMap<>();
+    Asignaturas asignaturas = new Asignaturas(null, null);
    
-    //Constructor
+    //CONSTRUCTOR
     public Alumno (String nombre, String apellidos){
         this.nombre = nombre;
         this.apellidos = apellidos;
     }
     //DEVUELVE NOMBRE Y APELLIDOS CONCATENADOS
     public String getInfo(){
-        return nombre + " " + apellidos;
+        return capitalize(nombre) + " " + capitalize(apellidos);
     }
     
     //AÑADE ASIGN Y NOTA A HASHMAP ASIGNATURAYNOTA
     public void añadirAsignaturaYNota(String materia, Double nota){
-        asignaturaYNota.put(materia, nota);
+        asignaturaYNota.put(asignaturas.setMateria(materia), asignaturas.setNota(nota));
     }
 
     //HACE EL PROMEDIO DE NOTAS
@@ -36,56 +38,80 @@ public class Alumno {
         String promedioString= df.format(promedio);
         return promedioString;
     }
+    //PONE LA PRIMERA LETRAS EN MAYUSCULAS
+    public String capitalize(String palabra){
+        String palabraCap = palabra.substring(0,1).toUpperCase()+palabra.substring(1).toLowerCase();
+        return palabraCap;
+    }
 
     //DEVUELVE EL BOELTIN
     public String mostrarBoletin(String promedio ){
 
         StringBuilder sb = new StringBuilder();
-        
-        sb.append("           \n");
         sb.append("ASIGNATURA               NOTA\n");
-        sb.append("----------------------------\n");
+        sb.append("-----------------------------\n");
         
         for (Map.Entry<String, Double> entry : asignaturaYNota.entrySet()){
-            String asignatura = entry.getKey();
+            String asignatura = capitalize(entry.getKey());
             String nota = String.format("%.2f",entry.getValue());
             sb.append(String.format("%-25s%s\n", asignatura, nota));
         }
-
-        sb.append("----------------------------\n");
-        sb.append("Nota media:              " + promedio);
-        sb.append("    \n");
+        sb.append("-----------------------------\n");
+        sb.append("Nota media:              " + promedio+"\n");
+        sb.append("-                          -\n");
 
         return sb.toString();
     }
 
-    public void modificarAsignaturas(){
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("Asignatura a modificar: ");
-        String asignModificar = scanner.nextLine();
-        Double nuevaNota = 0.0;
+    //MODIFICA LA NOTA DE LAS ASIGNATURAS
+    public String modificarNotaAsignaturas(){
+        String asignModificar = " ";
         boolean siguePidiendo=true;
-        while (siguePidiendo){
-            for (Map.Entry<String, Double> entry : asignaturaYNota.entrySet()){
-                String asignatura = entry.getKey();
-                Double nota = entry.getValue();
-                if (asignatura.equalsIgnoreCase(asignModificar)){
-                    
-                    System.out.print(entry.getValue());
-                    scanner.nextLine();
-                    System.out.print("Introduce la nueva nota: ");
-                    nuevaNota = scanner.nextDouble();
-                    asignaturaYNota.put(asignatura,nuevaNota);
+        boolean pideMas = true;
+        while(pideMas){
+            while (siguePidiendo){
+                System.out.print("Asignatura a modificar. Pulsa -e- para salir: ");
+                asignModificar = scanner.nextLine();
+                if (asignModificar.equalsIgnoreCase("e")) {
                     siguePidiendo=false;
-                    break;
-                }else{
-                    siguePidiendo=true;
+                    break; 
                 }
-                    
-                    
-            }
+                boolean asignaturaEncontrada = false;
+                for (Map.Entry<String, Double> entry : asignaturaYNota.entrySet()){
+                    String asignatura = entry.getKey();
+                    Double nota = entry.getValue();
+                    if (asignatura.equalsIgnoreCase(asignModificar)){
+                        asignaturaEncontrada = true;
+                        System.out.printf("Nota actual: %.2f\n", nota);
+                        System.out.print("Introduce la nueva nota: ");
+                        Double nuevaNota = scanner.nextDouble();
+                        scanner.nextLine();
+                        asignaturaYNota.put(asignatura,nuevaNota);
+                        boolean pide = true;
+                        while(pide){
+                            System.out.print("Desea modificar otra asignatura? Y/N: ");
+                                    asignModificar = scanner.nextLine();
+                                    if (asignModificar.equalsIgnoreCase("y")){
+                                        pideMas = true; 
+                                        siguePidiendo=true;
+                                        pide=false;
+                                    }else if (asignModificar.equalsIgnoreCase("n")){
+                                        pide=false;
+                                        pideMas=false;
+                                        siguePidiendo=false;
+                                    }else{
+                                        System.out.print("Por favor introduce un valor correcto.");
+                                        pide=true;
+                                    }
+                        }
+                    }
+                }
+                if (asignaturaEncontrada==false){
+                    System.out.println("Valor erróneo. Por favor, elija una asignatura del boletín.");
+                }
+            }      
         }
-    }
-   
+        return asignModificar;
+    }  
 }
     
