@@ -10,7 +10,6 @@ public class Main {
         String materia=" ";
         String nombre = "";
         String apellidos = "";
-        Asignaturas asignatura = new Asignaturas(materia,nota);
         Validador validador = new Validador();
         int numAlumn=validador.validadorNumAlumn();
 
@@ -31,7 +30,9 @@ public class Main {
                     System.out.print("Siguiente--> \n");
                 }
             }
-            System.out.print("Siguiente alumno. \n");
+            if (i<numAlumn){
+            System.out.print("SIGUIENTE ALUMNO/A: \n");
+            }
         }
         //MOSTRAR BOLETIN
         for (Alumno alumno : listaAlumnos) {
@@ -71,6 +72,6 @@ public class Main {
             System.out.printf("ALUMNA/O: " + alumno.getInfo() + "\n");
             System.out.print(alumno.mostrarBoletin(alumno.notaMedia()));
         }
+    scanner.close();
     }
-
 }

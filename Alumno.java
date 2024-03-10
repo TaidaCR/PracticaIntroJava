@@ -7,7 +7,6 @@ public class Alumno {
     static Scanner scanner = new Scanner(System.in);
     private String nombre;
     private String apellidos;
-    String asignatura; //?? ELIMINAR?
     HashMap<String, Double> asignaturaYNota = new HashMap<>();
     Asignaturas asignaturas = new Asignaturas(null, null);
    
@@ -38,6 +37,7 @@ public class Alumno {
         String promedioString= df.format(promedio);
         return promedioString;
     }
+
     //PONE LA PRIMERA LETRAS EN MAYUSCULAS
     public String capitalize(String palabra){
         String palabraCap = palabra.substring(0,1).toUpperCase()+palabra.substring(1).toLowerCase();
@@ -45,7 +45,7 @@ public class Alumno {
     }
 
     //DEVUELVE EL BOELTIN
-    public String mostrarBoletin(String promedio ){
+    public String mostrarBoletin(String promedio){
 
         StringBuilder sb = new StringBuilder();
         sb.append("ASIGNATURA               NOTA\n");
@@ -74,7 +74,6 @@ public class Alumno {
                 asignModificar = scanner.nextLine();
                 if (asignModificar.equalsIgnoreCase("e")) {
                     siguePidiendo=false;
-                    break; 
                 }
                 boolean asignaturaEncontrada = false;
                 for (Map.Entry<String, Double> entry : asignaturaYNota.entrySet()){
@@ -92,7 +91,6 @@ public class Alumno {
                             System.out.print("Desea modificar otra asignatura? Y/N: ");
                                     asignModificar = scanner.nextLine();
                                     if (asignModificar.equalsIgnoreCase("y")){
-                                        pideMas = true; 
                                         siguePidiendo=true;
                                         pide=false;
                                     }else if (asignModificar.equalsIgnoreCase("n")){
@@ -101,7 +99,6 @@ public class Alumno {
                                         siguePidiendo=false;
                                     }else{
                                         System.out.print("Por favor introduce un valor correcto.");
-                                        pide=true;
                                     }
                         }
                     }
